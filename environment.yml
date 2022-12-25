@@ -1,0 +1,10 @@
+name: card-games-in-python
+channels:
+  - defaults
+  - conda-forge
+dependencies:
+  - pip=22.1.2
+  - python=3.10.4
+  - pip:
+    - -r requirements.txt
+    - -e .
