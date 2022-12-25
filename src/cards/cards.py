@@ -10,8 +10,10 @@ from typing import Optional
 
 ################################################################################
 
-
 class CardColor:
+    """
+    Color associated with a playing card.
+    """
     COLORS = ["Red", "Black"]
 
     def __init__(self, color_name: str):
@@ -27,17 +29,13 @@ class CardSuit:
     This excludes jokers.
     """
     SUIT_SYMBOLS = ["♥", "♦", "♣", "♠"]
+    RED_SUIT_SYMBOLS = ["♥", "♦"]
+    BLACK_SUIT_SYMBOLS = ["♣", "♠"]
     SUIT_NAMES = {
         "♥": "Hearts",
         "♦": "Diamonds",
         "♣": "Clubs",
         "♠": "Spades",
-    }
-    SUIT_COLORS = {
-        "♥": "Red",
-        "♦": "Red",
-        "♣": "Black",
-        "♠": "Black",
     }
 
     def __init__(self, suit_symbol: str):
@@ -45,13 +43,21 @@ class CardSuit:
             raise ValueError(f"The value of the suit '{suit_symbol}' needs to be in the following list: ♥, ♦, ♣, or ♠.")
         else:
             self.suit_symbol = suit_symbol
-            self.suit_color = self.SUIT_COLORS[suit_symbol]
     
     def __str__(self):
         return self.suit_symbol
 
     def __repr__(self):
         return self.SUIT_NAMES[self.suit_symbol]
+
+    @property
+    def suit_color(self):
+        if self.suit_symbol in self.RED_SUIT_SYMBOLS:
+            return CardColor("Red")
+        elif self.suit_symbol in self.BLACK_SUIT_SYMBOLS:
+            return CardColor("Black")
+        else:
+            raise ValueError("Invalid suit color.")
 
 
 class CardLabel:
@@ -117,6 +123,13 @@ class Card:
     @property
     def is_joker(self):
         return self.joker_color is not None
+
+    @property
+    def card_color(self):
+        if self.is_joker:
+            return self.joker_color
+        else:
+            return self.suit.suit_color 
 
     def __str__(self):
         if (self.is_joker):

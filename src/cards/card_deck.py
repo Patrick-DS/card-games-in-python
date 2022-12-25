@@ -7,12 +7,6 @@ from random import shuffle
 # Global imports
 
 # Local imports
-from .cards import (
-    CardSuit,
-    CardLabel,
-    CardColor,
-    Card,
-)
 
 ################################################################################
 
@@ -50,7 +44,7 @@ class CardDeck:
         cards_to_sample_from = [*self.cards]
         shuffle(cards_to_sample_from)
         
-        partial_sums = [sum(sample_sizes[:i+1]) for i in range(len(sample_sizes))]
+        partial_sums = [int(sum(sample_sizes[:i+1])) for i in range(len(sample_sizes))]
 
         return (
             cards_to_sample_from[sample_start:sample_end]
