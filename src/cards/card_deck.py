@@ -7,12 +7,6 @@ from random import shuffle
 # Global imports
 
 # Local imports
-from .cards import (
-    CardSuit,
-    CardLabel,
-    CardColor,
-    Card,
-)
 
 ################################################################################
 
