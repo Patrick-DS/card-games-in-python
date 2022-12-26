@@ -17,12 +17,8 @@ from .playing_card import (
 ################################################################################
 
 class PortugueseCardDeck(CardDeck):
-    def __init__(self):
-        super().__init__(
-            deck_name = "PortugueseCardDeck",
-            card_properties = [
-                (suit, label, None)
-                for suit, label in product(PlayingCardSuit, PORTUGUESE_CARD_LABELS)
-            ],
-            card_cls = PortuguesePlayingCard
-        )
+    CARD_CLASS = PortuguesePlayingCard
+    CARD_PROPERTIES =  [
+        (suit, label, None)
+        for suit, label in product(PlayingCardSuit, PORTUGUESE_CARD_LABELS)
+    ]

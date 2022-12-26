@@ -5,22 +5,20 @@ Module defining classes for a standard deck of cards, where all the cards are in
 from itertools import product
 
 # Global imports
-
-# Local imports
-from ..card_deck import CardDeck
 from cards import (
+    PlayingCard,
     PlayingCardSuit,
     PlayingCardLabel,
 )
 
+# Local imports
+from ..card_deck import CardDeck
+
 ################################################################################
 
 class StandardCardDeck(CardDeck):
-    def __init__(self):
-        super().__init__(
-            deck_name = "FullCardDeck",
-            card_properties = [
-                (suit, label, None)
-                for suit, label in product(PlayingCardSuit, PlayingCardLabel)
-            ]
-        )
+    CARD_CLASS = PlayingCard
+    CARD_PROPERTIES = [
+        (suit, label, None)
+        for suit, label in product(PlayingCardSuit, PlayingCardLabel)
+    ]

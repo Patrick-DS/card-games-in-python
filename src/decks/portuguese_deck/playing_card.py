@@ -4,12 +4,12 @@ Module defining classes for a deck of cards for Portuguese card games, where 8's
 # Third-party imports
 
 # Global imports
-
-# Local imports
 from cards import (
     PlayingCard,
     PlayingCardLabel,
 )
+
+# Local imports
 
 ################################################################################
 
