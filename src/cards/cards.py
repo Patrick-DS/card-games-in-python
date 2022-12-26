@@ -1,5 +1,6 @@
 """
 Module defining classes for a card that are not tied to any game.
+The variables and methods here are meant to serve as data sources to create game cards. So nothing should tie them to a specific game; the data in the classes is meant to be used to generate other classes that would have the properties that a card needs for a game.
 """
 # Third-party imports
 from typing import Optional
@@ -7,109 +8,48 @@ from typing import Optional
 # Global imports
 
 # Local imports
+from .suit import PlayingCardSuit
+from .label import PlayingCardLabel
+from .color import (
+    PlayingCardColor,
+    COLORS_ORDERING,
+)
 
 ################################################################################
 
-class CardColor:
-    """
-    Color associated with a playing card.
-    """
-    COLORS = ["Red", "Black"]
-
-    def __init__(self, color_name: str):
-        if (color_name not in self.COLORS):
-            raise ValueError(f"The value of the color '{color_name}' needs to be either 'Red' or 'Black'.")
-        else:
-            self.color_name = color_name
-
-
-class CardSuit:
-    """
-    Class that types the four suits available in a card deck.
-    This excludes jokers.
-    """
-    SUIT_SYMBOLS = ["♥", "♦", "♣", "♠"]
-    RED_SUIT_SYMBOLS = ["♥", "♦"]
-    BLACK_SUIT_SYMBOLS = ["♣", "♠"]
-    SUIT_NAMES = {
-        "♥": "Hearts",
-        "♦": "Diamonds",
-        "♣": "Clubs",
-        "♠": "Spades",
-    }
-
-    def __init__(self, suit_symbol: str):
-        if (suit_symbol not in self.SUIT_SYMBOLS):
-            raise ValueError(f"The value of the suit '{suit_symbol}' needs to be in the following list: ♥, ♦, ♣, or ♠.")
-        else:
-            self.suit_symbol = suit_symbol
-    
-    def __str__(self):
-        return self.suit_symbol
-
-    def __repr__(self):
-        return self.SUIT_NAMES[self.suit_symbol]
-
-    @property
-    def suit_color(self):
-        if self.suit_symbol in self.RED_SUIT_SYMBOLS:
-            return CardColor("Red")
-        elif self.suit_symbol in self.BLACK_SUIT_SYMBOLS:
-            return CardColor("Black")
-        else:
-            raise ValueError("Invalid suit color.")
-
-
-class CardLabel:
-    """
-    Class that types the 13 labels (or values) available in a card deck.
-    This excludes jokers.
-    """
-    LABEL_SYMBOLS = ["2","3","4","5","6","7","8","9","10","J","Q","K","A"]
-    PORTUGUESE_LABEL_SYMBOLS = ["2","3","4","5","6","Q","J","K","7","A"]
-    LABEL_NAMES = {
-        "2": "Two",
-        "3": "Three",
-        "4": "Four",
-        "5": "Five",
-        "6": "Six",
-        "7": "Seven",
-        "8": "Eight",
-        "9": "Nine",
-        "10": "Ten",
-        "J": "Jack",
-        "Q": "Queen",
-        "K": "King",
-        "A": "Ace",
-    }
-
-    def __init__(self, label_symbol: str):
-        if (label_symbol not in self.LABEL_SYMBOLS):
-            raise ValueError(f"The value of the label '{label_symbol}' needs to be in the following list: 2, 3, 4, 5, 6, 7, 8, 9, 10, J, Q, K, or A.")
-        else:
-            self.label_symbol = label_symbol
-    
-    def __str__(self):
-        return self.label_symbol
-
-    def __repr__(self):
-        return self.LABEL_NAMES[self.label_symbol]
-
-
-class Card:
+class PlayingCard:
     """
     A generic class to define the cards in a full deck.
     Subclass this class in various games to enable the features of the game.
     """
-    COLOR_ORDERS = CardColor.COLORS
-    SUIT_ORDERS = CardSuit.SUIT_SYMBOLS
-    LABEL_ORDERS = CardLabel.LABEL_SYMBOLS
+    COLOR_ORDERS = COLORS_ORDERING
+    SUIT_ORDERS = [
+        PlayingCardSuit.HEARTS,
+        PlayingCardSuit.DIAMONDS,
+        PlayingCardSuit.CLUBS,
+        PlayingCardSuit.SPADES,
+    ]
+    LABEL_ORDERS =  [
+        PlayingCardLabel.TWO,
+        PlayingCardLabel.THREE,
+        PlayingCardLabel.FOUR,
+        PlayingCardLabel.FIVE,
+        PlayingCardLabel.SIX,
+        PlayingCardLabel.SEVEN,
+        PlayingCardLabel.EIGHT,
+        PlayingCardLabel.NINE,
+        PlayingCardLabel.TEN,
+        PlayingCardLabel.JACK,
+        PlayingCardLabel.QUEEN,
+        PlayingCardLabel.KING,
+        PlayingCardLabel.ACE,
+    ]
 
     def __init__(
         self,
-        suit: CardSuit,
-        label: CardLabel,
-        joker_color: Optional[CardColor] = None,
+        suit: PlayingCardSuit,
+        label: PlayingCardLabel,
+        joker_color: Optional[PlayingCardColor] = None,
     ):
         if (joker_color is not None):
             self.joker_color = joker_color
@@ -121,11 +61,11 @@ class Card:
             self.label = label
 
     @property
-    def is_joker(self):
+    def is_joker(self) -> bool:
         return self.joker_color is not None
 
     @property
-    def card_color(self):
+    def card_color(self) -> PlayingCardSuit:
         if self.is_joker:
             return self.joker_color
         else:
@@ -133,35 +73,40 @@ class Card:
 
     def __str__(self):
         if (self.is_joker):
-            return f"{self.joker_color.color_name[0]}J"
+            return self.joker_color.value[0] + "J"
         else:
             return f"{self.label}{self.suit}"
 
     def __repr__(self):
         if (self.joker_color is not None):
-            return f"{self.joker_color.color_name} Joker"
+            return f"{self.joker_color.value} Joker"
         else:
             return f"{self.label} of {repr(self.suit)}"
 
-    def __lt__(self, other):
-        # First deal with jokers:
+    def __eq__(self, other):
+        """
+        Used to determine if two playing cards represent exactly the same card (value and suit, and in the case of jokers, including color).
+        """
         if self.is_joker:
+            return self.joker_color == other.joker_color
+        else:
+            return (
+                self.suit == other.suit 
+                and 
+                self.label == other.label
+            )
+
+    def __lt__(self, other):
+        """
+        Used only to produce a sorted deck. Do not use in games.
+        For this, create another class and use PlayingCard instances as data sources.
+        """
+        if self.is_joker: # First deal with jokers
             if other.is_joker:
-                self_joker_color_index = self.COLOR_ORDERS.index(self.joker_color.color_name)
-                other_joker_color_index = self.COLOR_ORDERS.index(other.joker_color.color_name)
-                return self_joker_color_index < other_joker_color_index
+                return self.joker_color < other.joker_color
             else:
                 return False
-        elif other.is_joker:
-            return True
-
-        # Then deal with suits
-        self_suit_index = self.SUIT_ORDERS.index(self.suit.suit_symbol)
-        other_suit_index = self.SUIT_ORDERS.index(other.suit.suit_symbol)
-        if (self_suit_index != other_suit_index):
-            return self_suit_index < other_suit_index
-
-        # Then deal with labels
-        self_label_index = self.LABEL_ORDERS.index(self.label.label_symbol)
-        other_label_index = self.LABEL_ORDERS.index(other.label.label_symbol)
-        return self_label_index < other_label_index
+        elif (self.suit != other.suit): # Then deal with suits
+            return self.SUIT_ORDERS.index(self.suit) < self.SUIT_ORDERS.index(other.suit)
+        else: # Then deal with labels
+            return self.LABEL_ORDERS.index(self.label) < self.LABEL_ORDERS.index(other.label)
