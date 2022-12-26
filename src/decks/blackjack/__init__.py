@@ -8,11 +8,11 @@ from itertools import repeat, chain
 from cards import PlayingCard
 
 # Local imports
-from ..standard_deck import StandardCardDeck
+from ..standard import StandardCardDeck
 
 ################################################################################
 
-def BlackjackDeck(n_of_decks = 1):
+def BlackjackCardDeck(n_of_decks = 1):
     """
     Factory function that generates the class for a BlackjackDeck. 
 
