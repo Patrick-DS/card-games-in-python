@@ -53,4 +53,3 @@ class PlayingCardSuit(Enum):
         Enables sorting values. The ordering is given by the order in SUITS_ORDERING.
         """
         return SUITS_ORDERING.index(self.value) < SUITS_ORDERING.index(other.value)
-
