@@ -13,19 +13,6 @@ from cards import (
 
 ################################################################################
 
-PORTUGUESE_CARD_LABELS = [
-    PlayingCardLabel.TWO,
-    PlayingCardLabel.THREE,
-    PlayingCardLabel.FOUR,
-    PlayingCardLabel.FIVE,
-    PlayingCardLabel.SIX,
-    PlayingCardLabel.QUEEN,
-    PlayingCardLabel.JACK,
-    PlayingCardLabel.KING,
-    PlayingCardLabel.SEVEN,
-    PlayingCardLabel.ACE,
-]
-
 PORTUGUESE_CARD_VALUES = {
     PlayingCardLabel.TWO: 0,
     PlayingCardLabel.THREE: 0,
@@ -45,11 +32,18 @@ class PortuguesePlayingCard(PlayingCard):
 
     The value property is added because it's the same in all portuguese games.
     """
-    def __lt__(self, other):
-        if (self.suit != other.suit): # First deal with suits
-            return self.suit < other.suit
-        else: 
-            return PORTUGUESE_CARD_LABELS.index(self.label) < PORTUGUESE_CARD_LABELS.index(other.label)
+    LABEL_ORDERS = [
+        PlayingCardLabel.TWO,
+        PlayingCardLabel.THREE,
+        PlayingCardLabel.FOUR,
+        PlayingCardLabel.FIVE,
+        PlayingCardLabel.SIX,
+        PlayingCardLabel.QUEEN,
+        PlayingCardLabel.JACK,
+        PlayingCardLabel.KING,
+        PlayingCardLabel.SEVEN,
+        PlayingCardLabel.ACE,
+    ]
 
     @property
     def value(self):

@@ -8,17 +8,11 @@ from typing import Optional
 # Global imports
 
 # Local imports
+from .suit import PlayingCardSuit
+from .label import PlayingCardLabel
 from .color import (
     PlayingCardColor,
     COLORS_ORDERING,
-)
-from .suit import (
-    PlayingCardSuit,
-    SUITS_ORDERING,
-)
-from .label import (
-    PlayingCardLabel,
-    LABELS_ORDERING,
 )
 
 ################################################################################
@@ -29,8 +23,27 @@ class PlayingCard:
     Subclass this class in various games to enable the features of the game.
     """
     COLOR_ORDERS = COLORS_ORDERING
-    SUIT_ORDERS = SUITS_ORDERING
-    LABEL_ORDERS = LABELS_ORDERING
+    SUIT_ORDERS = [
+        PlayingCardSuit.HEARTS,
+        PlayingCardSuit.DIAMONDS,
+        PlayingCardSuit.CLUBS,
+        PlayingCardSuit.SPADES,
+    ]
+    LABEL_ORDERS =  [
+        PlayingCardLabel.TWO,
+        PlayingCardLabel.THREE,
+        PlayingCardLabel.FOUR,
+        PlayingCardLabel.FIVE,
+        PlayingCardLabel.SIX,
+        PlayingCardLabel.SEVEN,
+        PlayingCardLabel.EIGHT,
+        PlayingCardLabel.NINE,
+        PlayingCardLabel.TEN,
+        PlayingCardLabel.JACK,
+        PlayingCardLabel.QUEEN,
+        PlayingCardLabel.KING,
+        PlayingCardLabel.ACE,
+    ]
 
     def __init__(
         self,
@@ -94,6 +107,6 @@ class PlayingCard:
             else:
                 return False
         elif (self.suit != other.suit): # Then deal with suits
-            return self.suit < other.suit
+            return self.SUIT_ORDERS.index(self.suit) < self.SUIT_ORDERS.index(other.suit)
         else: # Then deal with labels
-            return self.label < other.label
+            return self.LABEL_ORDERS.index(self.label) < self.LABEL_ORDERS.index(other.label)

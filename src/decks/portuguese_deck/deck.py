@@ -9,10 +9,7 @@ from cards import PlayingCardSuit
 
 # Local imports
 from ..card_deck import CardDeck
-from .playing_card import (
-    PortuguesePlayingCard,
-    PORTUGUESE_CARD_LABELS,
-)
+from .playing_card import PortuguesePlayingCard
 
 ################################################################################
 
@@ -20,5 +17,5 @@ class PortugueseCardDeck(CardDeck):
     CARD_CLASS = PortuguesePlayingCard
     CARD_PROPERTIES =  [
         (suit, label, None)
-        for suit, label in product(PlayingCardSuit, PORTUGUESE_CARD_LABELS)
+        for suit, label in product(PlayingCardSuit, PortuguesePlayingCard.LABEL_ORDERS)
     ]

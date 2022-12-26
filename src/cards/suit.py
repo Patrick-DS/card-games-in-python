@@ -13,7 +13,6 @@ from .color import PlayingCardColor
 
 RED_SUIT_SYMBOLS = ["♥", "♦"]
 BLACK_SUIT_SYMBOLS = ["♣", "♠"]
-SUITS_ORDERING = ["♥","♦","♣","♠"]
 SUIT_NAMES = {
     "♥": "Hearts",
     "♦": "Diamonds",
@@ -47,9 +46,3 @@ class PlayingCardSuit(Enum):
 
     def __repr__(self):
         return self.suit_name
-
-    def __lt__(self, other):
-        """
-        Enables sorting values. The ordering is given by the order in SUITS_ORDERING.
-        """
-        return SUITS_ORDERING.index(self.value) < SUITS_ORDERING.index(other.value)
