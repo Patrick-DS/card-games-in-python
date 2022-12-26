@@ -8,9 +8,18 @@ from typing import Optional
 # Global imports
 
 # Local imports
-from .color import PlayingCardColor
-from .suit import PlayingCardSuit
-from .label import PlayingCardLabel
+from .color import (
+    PlayingCardColor,
+    COLORS_ORDERING,
+)
+from .suit import (
+    PlayingCardSuit,
+    SUITS_ORDERING,
+)
+from .label import (
+    PlayingCardLabel,
+    LABELS_ORDERING,
+)
 
 ################################################################################
 
@@ -19,9 +28,9 @@ class PlayingCard:
     A generic class to define the cards in a full deck.
     Subclass this class in various games to enable the features of the game.
     """
-    COLOR_ORDERS = PlayingCardColor.COLORS
-    SUIT_ORDERS = PlayingCardSuit.SUIT_SYMBOLS
-    LABEL_ORDERS = PlayingCardLabel.LABEL_SYMBOLS
+    COLOR_ORDERS = COLORS_ORDERING
+    SUIT_ORDERS = SUITS_ORDERING
+    LABEL_ORDERS = LABELS_ORDERING
 
     def __init__(
         self,
@@ -51,13 +60,13 @@ class PlayingCard:
 
     def __str__(self):
         if (self.is_joker):
-            return self.joker_color.color_name[0] + "J"
+            return self.joker_color.value[0] + "J"
         else:
             return f"{self.label}{self.suit}"
 
     def __repr__(self):
         if (self.joker_color is not None):
-            return f"{self.joker_color.color_name} Joker"
+            return f"{self.joker_color.value} Joker"
         else:
             return f"{self.label} of {repr(self.suit)}"
 
@@ -79,25 +88,12 @@ class PlayingCard:
         Used only to produce a sorted deck. Do not use in games.
         For this, create another class and use PlayingCard instances as data sources.
         """
-        # TODO: Finish fixing this with new data structure
-        # First deal with jokers:
-        if self.is_joker:
+        if self.is_joker: # First deal with jokers
             if other.is_joker:
-                self_joker_color_index = self.COLOR_ORDERS.index(self.joker_color.color_name)
-                other_joker_color_index = self.COLOR_ORDERS.index(other.joker_color.color_name)
-                return self_joker_color_index < other_joker_color_index
+                return self.joker_color < other.joker_color
             else:
                 return False
-        elif other.is_joker:
-            return True
-
-        # Then deal with suits
-        self_suit_index = self.SUIT_ORDERS.index(self.suit.suit_symbol)
-        other_suit_index = self.SUIT_ORDERS.index(other.suit.suit_symbol)
-        if (self_suit_index != other_suit_index):
-            return self_suit_index < other_suit_index
-
-        # Then deal with labels
-        self_label_index = self.LABEL_ORDERS.index(self.label.label_symbol)
-        other_label_index = self.LABEL_ORDERS.index(other.label.label_symbol)
-        return self_label_index < other_label_index
+        elif (self.suit != other.suit): # Then deal with suits
+            return self.suit < other.suit
+        else: # Then deal with labels
+            return self.label < other.label

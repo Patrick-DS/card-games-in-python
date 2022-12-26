@@ -6,12 +6,12 @@ Module defining classes for a full deck of cards, where all the cards are includ
 # Global imports
 
 # Local imports
-from ..card_deck import CardDeck
+from .card_deck import CardDeck
 from ..cards import (
-    CardSuit,
-    CardLabel,
-    CardColor,
-    Card,
+    PlayingCard,
+    PlayingCardSuit,
+    PlayingCardLabel,
+    PlayingCardColor,
 )
 
 ################################################################################
@@ -20,13 +20,13 @@ class FullCardDeck(CardDeck):
     def __init__(self):
         cards = sorted([
             *(
-                Card(CardSuit(suit_symbol), CardLabel(label_symbol))
-                for suit_symbol in CardSuit.SUIT_SYMBOLS
-                for label_symbol in CardLabel.LABEL_SYMBOLS
+                PlayingCard(suit, label)
+                for suit in PlayingCardSuit
+                for label in PlayingCardLabel
             ),
             *(
-                Card(None, None, CardColor(color_name))
-                for color_name in CardColor.COLORS
+                PlayingCard(None, None, joker_color)
+                for joker_color in PlayingCardColor
             ),
         ])
 

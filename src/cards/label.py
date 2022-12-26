@@ -10,7 +10,7 @@ from enum import Enum
 
 ################################################################################
 
-LABEL_SYMBOLS = ["2","3","4","5","6","7","8","9","10","J","Q","K","A"]
+LABELS_ORDERING = ["2","3","4","5","6","7","8","9","10","J","Q","K","A"]
 LABEL_NAMES = {
     "2": "Two",
     "3": "Three",
@@ -55,3 +55,9 @@ class PlayingCardLabel(Enum):
 
     def __repr__(self):
         return self.suit_name
+
+    def __lt__(self, other):
+        """
+        Enables sorting values. The ordering is given by the order in LABEL_SYMBOLS.
+        """
+        return LABELS_ORDERING.index(self.value) < LABELS_ORDERING.index(other.value)

@@ -10,6 +10,8 @@ from enum import Enum
 
 ################################################################################
 
+COLORS_ORDERING = ["Red", "Black"]
+
 class PlayingCardColor(Enum):
     """
     Color associated with a playing card.
@@ -17,3 +19,8 @@ class PlayingCardColor(Enum):
     RED = "Red"
     BLACK = "Black"
 
+    def __lt__(self, other):
+        """
+        Enables sorting values.
+        """
+        return COLORS_ORDERING.index(self.value) < COLORS_ORDERING.index(other.value)

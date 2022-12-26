@@ -6,7 +6,7 @@ Module defining classes for a deck of cards for standard card games, where all c
 # Global imports
 
 # Local imports
-from ..card_deck import CardDeck
+from .card_deck import CardDeck
 from ..cards import (
     CardSuit,
     CardLabel,

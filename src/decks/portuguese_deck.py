@@ -6,7 +6,7 @@ Module defining classes for a deck of cards for Portuguese card games, where 8's
 # Global imports
 
 # Local imports
-from ..card_deck import CardDeck
+from .card_deck import CardDeck
 from ..cards import (
     CardSuit,
     CardLabel,
